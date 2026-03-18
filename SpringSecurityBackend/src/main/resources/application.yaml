@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: SpringSecurityBackend
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/springsecurity2
+    username: root
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  sql:
+    init:
+      mode: never
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  security:
+    user:
+      name: ekin
+      password: ekin6262
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
