@@ -1,4 +1,4 @@
-package com.ayhanekin.SpringSecurityBackend.auth;
+package com.ayhanekin.SpringSecurityBackend.controller;
 
 import com.ayhanekin.SpringSecurityBackend.dto.request.LoginRequest;
 import com.ayhanekin.SpringSecurityBackend.dto.request.RegisterRequest;

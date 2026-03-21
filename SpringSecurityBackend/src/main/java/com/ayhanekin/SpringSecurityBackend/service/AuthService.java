@@ -2,6 +2,7 @@ package com.ayhanekin.SpringSecurityBackend.service;
 
 import com.ayhanekin.SpringSecurityBackend.dto.request.LoginRequest;
 import com.ayhanekin.SpringSecurityBackend.dto.request.RegisterRequest;
+import com.ayhanekin.SpringSecurityBackend.entity.Role;
 import com.ayhanekin.SpringSecurityBackend.entity.User;
 import com.ayhanekin.SpringSecurityBackend.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,7 +27,7 @@ public class AuthService {
         User user = User.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(request.getRole())
+                .role(Role.ROLE_USER)
                 .build();
         userRepository.save(user);
         return "User Created...";
