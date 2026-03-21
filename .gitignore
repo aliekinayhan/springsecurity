@@ -1,0 +1,14 @@
+# Maven
+SpringSecurityBackend/target/
+
+# IntelliJ
+.idea/
+*.iml
+
+# Environment
+*.env
+application-local.yml
+
+# Node
+SpringSecurityFrontend/node_modules/
+SpringSecurityFrontend/dist/
