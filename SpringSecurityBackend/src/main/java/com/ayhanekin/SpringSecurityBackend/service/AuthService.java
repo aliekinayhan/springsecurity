@@ -5,6 +5,7 @@ import com.ayhanekin.SpringSecurityBackend.dto.request.RegisterRequest;
 import com.ayhanekin.SpringSecurityBackend.entity.Role;
 import com.ayhanekin.SpringSecurityBackend.entity.User;
 import com.ayhanekin.SpringSecurityBackend.repository.UserRepository;
+import com.ayhanekin.SpringSecurityBackend.security.JwtService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,11 +17,12 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-
-    public AuthService(UserRepository repository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
+    private final JwtService jwtService;
+    public AuthService(UserRepository repository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtService jwtService) {
         this.userRepository = repository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
     public String register(RegisterRequest request) {
@@ -40,7 +42,9 @@ public class AuthService {
                         request.getPassword()
                 )
         );
-        return "Welcome back!";
+        String token = jwtService.generateToken(request.getUsername());
+
+        return "Welcome back! :" +token;
     }
 }
 
