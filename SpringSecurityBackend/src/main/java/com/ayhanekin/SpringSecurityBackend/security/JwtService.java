@@ -3,6 +3,7 @@ package com.ayhanekin.SpringSecurityBackend.security;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -12,14 +13,17 @@ import java.util.Date;
 public class JwtService {
 
     // the secret key to sign the token we shouldn't leak this
-    private final String SECRET_KEY = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
 
+    @Value("${jwt.access-token-expiration}")
+    private long ACCESS_TOKEN_EXPIRATION;
 
     public String generateToken(String username) {
         return Jwts.builder() // start to create token and put those info into a token
                 .subject(username) // for whom token is produced
                 .issuedAt(new Date()) // when token is produced
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .expiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION))
                 .signWith(getSigningKey(),Jwts.SIG.HS256) // sign with secret key
                 .compact(); // merge everything and produce a string with xxxxx.yyyyy.zzzzz this format
     }
