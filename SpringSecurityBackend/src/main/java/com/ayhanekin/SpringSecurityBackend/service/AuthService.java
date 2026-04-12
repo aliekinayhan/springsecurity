@@ -1,6 +1,7 @@
 package com.ayhanekin.SpringSecurityBackend.service;
 
 import com.ayhanekin.SpringSecurityBackend.dto.request.LoginRequest;
+import com.ayhanekin.SpringSecurityBackend.dto.request.RefreshRequest;
 import com.ayhanekin.SpringSecurityBackend.dto.request.RegisterRequest;
 import com.ayhanekin.SpringSecurityBackend.entity.RefreshToken;
 import com.ayhanekin.SpringSecurityBackend.entity.Role;
@@ -60,6 +61,19 @@ public class AuthService {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken.getToken())
                 .build();
+    }
+    public AuthResponse refresh(RefreshRequest request) {
+        RefreshToken refreshToken = refreshTokenService.verifyRefreshToken(request.getRefreshToken());
+        String accessToken = jwtService.generateToken(refreshToken.getUser().getUsername());
+        return AuthResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken.getToken())
+                .build();
+    }
+
+    public String logout(String username) {
+        refreshTokenService.deleteRefreshToken(username);
+        return "Logged out successfully";
     }
 }
 
