@@ -2,6 +2,7 @@ package com.ayhanekin.SpringSecurityBackend.controller;
 
 import com.ayhanekin.SpringSecurityBackend.dto.request.LoginRequest;
 import com.ayhanekin.SpringSecurityBackend.dto.request.RegisterRequest;
+import com.ayhanekin.SpringSecurityBackend.dto.response.AuthResponse;
 import com.ayhanekin.SpringSecurityBackend.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
         return ResponseEntity.ok(service.login(request));
     }
 }
+

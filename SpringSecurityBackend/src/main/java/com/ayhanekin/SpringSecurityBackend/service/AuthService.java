@@ -2,6 +2,7 @@ package com.ayhanekin.SpringSecurityBackend.service;
 
 import com.ayhanekin.SpringSecurityBackend.dto.request.LoginRequest;
 import com.ayhanekin.SpringSecurityBackend.dto.request.RegisterRequest;
+import com.ayhanekin.SpringSecurityBackend.entity.RefreshToken;
 import com.ayhanekin.SpringSecurityBackend.entity.Role;
 import com.ayhanekin.SpringSecurityBackend.entity.User;
 import com.ayhanekin.SpringSecurityBackend.repository.UserRepository;
@@ -10,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.ayhanekin.SpringSecurityBackend.dto.response.AuthResponse;
 
 @Service
 public class AuthService {
@@ -18,11 +20,20 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-    public AuthService(UserRepository repository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtService jwtService) {
+    private final RefreshTokenService refreshTokenService;
+    public AuthService(
+            UserRepository repository,
+            PasswordEncoder passwordEncoder,
+            AuthenticationManager authenticationManager,
+            JwtService jwtService,
+            RefreshTokenService refreshTokenService
+
+    ) {
         this.userRepository = repository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.refreshTokenService = refreshTokenService;
     }
 
     public String register(RegisterRequest request) {
@@ -35,16 +46,20 @@ public class AuthService {
         return "User Created...";
     }
 
-    public String login(LoginRequest request) {
+    public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
                         request.getPassword()
                 )
         );
-        String token = jwtService.generateToken(request.getUsername());
+        String accessToken = jwtService.generateToken(request.getUsername());
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(request.getUsername());
 
-        return "Welcome back! :" +token;
+        return AuthResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken.getToken())
+                .build();
     }
 }
 
