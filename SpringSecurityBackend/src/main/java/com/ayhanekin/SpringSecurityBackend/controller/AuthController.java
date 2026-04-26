@@ -7,6 +7,7 @@ import com.ayhanekin.SpringSecurityBackend.dto.response.AuthResponse;
 import com.ayhanekin.SpringSecurityBackend.entity.RefreshToken;
 import com.ayhanekin.SpringSecurityBackend.service.AuthService;
 import com.ayhanekin.SpringSecurityBackend.service.RefreshTokenService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,12 +24,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request) {
         return ResponseEntity.ok(service.register(request));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(service.login(request));
     }
 
