@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -13,13 +14,14 @@ function Login() {
       body: JSON.stringify({ username, password }),
     });
 
-    const token = await response.text();
+    const data = await response.json();
 
     if (response.ok) {
-      localStorage.setItem("token", token);
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
       navigate("/");
     } else {
-      alert("Giriş başarısız!");
+      setError(data.message);
     }
   };
 
@@ -27,6 +29,7 @@ function Login() {
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
         <h1 className="text-2xl font-bold mb-6 text-center">Giriş Yap</h1>
+        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
         <input
           type="text"
           placeholder="Kullanıcı adı"

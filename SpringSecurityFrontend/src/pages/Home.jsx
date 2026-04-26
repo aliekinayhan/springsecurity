@@ -1,10 +1,17 @@
 import { useNavigate, Link } from "react-router-dom";
+import { apiFetch } from "../api";
 
 function Home() {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
+  const handleLogout = async () => {
+    const refreshToken = localStorage.getItem("refreshToken");
+    await apiFetch("/auth/logout", {
+      method: "POST",
+      body: JSON.stringify({ refreshToken }),
+    });
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     navigate("/login");
   };
 
@@ -34,9 +41,7 @@ function Home() {
       </div>
       <p className="text-gray-600 leading-relaxed">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat.
+        tempor incididunt ut labore et dolore magna aliqua.
       </p>
     </div>
   );
