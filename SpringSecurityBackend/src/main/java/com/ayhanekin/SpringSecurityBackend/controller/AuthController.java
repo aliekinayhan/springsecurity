@@ -5,7 +5,6 @@ import com.ayhanekin.SpringSecurityBackend.dto.request.RefreshRequest;
 import com.ayhanekin.SpringSecurityBackend.dto.request.RegisterRequest;
 import com.ayhanekin.SpringSecurityBackend.dto.response.AuthResponse;
 import com.ayhanekin.SpringSecurityBackend.entity.RefreshToken;
-import com.ayhanekin.SpringSecurityBackend.security.JwtService;
 import com.ayhanekin.SpringSecurityBackend.service.AuthService;
 import com.ayhanekin.SpringSecurityBackend.service.RefreshTokenService;
 import org.springframework.http.ResponseEntity;
